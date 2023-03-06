@@ -45,10 +45,10 @@
                             <div class="col-md-6">
                                 <div class="d-flex">
                                     
-                                    <input id="gender" type="radio"  value="male" class=" @error('gender') is-invalid @enderror" name="gender" value="{{ old('gender') }}" required autocomplete="gender">
+                                    <input id="gender-m" type="radio"  value="male" class=" @error('gender') is-invalid @enderror" name="gender" value="{{ old('gender') }}" required autocomplete="gender">
                                     <label for="gender" class="col-md-4 col-form-label text-md-end">{{ __('Male') }}</label>
 
-                                    <input id="gender" type="radio" value="female" class=" @error('gender') is-invalid @enderror" name="gender" value="{{ old('gender') }}" required autocomplete="gender">
+                                    <input id="gender-f" type="radio" value="female" class=" @error('gender') is-invalid @enderror" name="gender" value="{{ old('gender') }}" required autocomplete="gender">
                                     <label for="gender" class="col-md-4 col-form-label text-md-end">{{ __('Female') }}</label>
                                 </div>
 
@@ -94,10 +94,10 @@
                             <div class="col-md-6">
                                 <div class="d-flex">
                                     
-                                    <input id="perference" type="radio"  value="male" class=" @error('perference') is-invalid @enderror" name="perference" value="{{ old('perference') }}" required autocomplete="perference">
+                                    <input id="perference-m" type="radio"  value="male" class=" @error('perference') is-invalid @enderror" name="perference" value="{{ old('perference') }}" required autocomplete="perference">
                                     <label for="perference" class="col-md-4 col-form-label text-md-end">{{ __('Male') }}</label>
 
-                                    <input id="perference" type="radio" value="female" class=" @error('perference') is-invalid @enderror" name="perference" value="{{ old('perference') }}" required autocomplete="perference">
+                                    <input id="perference-f" type="radio" value="female" class=" @error('perference') is-invalid @enderror" name="perference" value="{{ old('perference') }}" required autocomplete="perference">
                                     <label for="perference" class="col-md-4 col-form-label text-md-end">{{ __('Female') }}</label>
                                 </div>
 
@@ -145,7 +145,8 @@
 
                     <div class="row mt-3">
                         <div class="col-md-6 offset-md-4">
-                            <div class="g-signin2 btn-primary mt-3" data-onsuccess="onSignIn">Direct login with Google</div>
+                            <a class="g-signin2" href="{{ route('googlelogin') }}">Direct login with Google</a>
+                            <!-- <div class="g-signin2 btn-primary mt-3" data-onsuccess="onSignIn">Direct login with Google</div> -->
 
                             <button type="google_signin" class="btn btn-primary mt-3">
                                {{ __('Direct logi n With Telegram') }}
@@ -161,4 +162,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

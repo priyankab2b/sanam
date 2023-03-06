@@ -24,6 +24,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 
-Route::get('/auth/google', 'Auth\GoogleController@redirectToGoogle');
-Route::get('/auth/google/callback', 'Auth\GoogleController@handleGoogleCallback');
+Route::get('/auth/google', 'App\Http\Controllers\Auth\GoogleController@redirectToGoogle')->name('googlelogin');
+Route::get('/auth/google/callback', 'App\Http\Controllers\Auth\GoogleController@handleGoogleCallback');
 ?>

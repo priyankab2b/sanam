@@ -4,16 +4,22 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+// use Google\Client;
+use Google_Client;
+use Google_Service_PeopleService;
+use Google_Service_PlusService;
+use Illuminate\Support\Facades\Auth;
 
 class GoogleController extends Controller
 {
     public function redirectToGoogle()
     {
+        
         $client = new Google_Client();
-        $client->setClientId(config('services.google.client_id'));
+        $client->setClientId(env('GOOGLE_CLIENT_ID'));
         $client->setRedirectUri(url('/auth/google/callback'));
-        $client->addScope(Google_Service_People::USERINFO_PROFILE);
-        $client->addScope(Google_Service_People::USERINFO_EMAIL);
+        $client->addScope(Google_Service_PeopleService::USERINFO_PROFILE);
+        $client->addScope(Google_Service_PeopleService::USERINFO_EMAIL);
 
         return redirect($client->createAuthUrl());
     }
@@ -29,7 +35,9 @@ class GoogleController extends Controller
 
         $client->setAccessToken($token['access_token']);
 
-        $service = new Google_Service_People($client);
+        // dd($client);
+        
+        $service = new Google_Service_PeopleService($client);
 
         $googleUser = $service->people->get('people/me', [
             'personFields' => 'names,emailAddresses',
@@ -52,5 +60,32 @@ class GoogleController extends Controller
 
         return redirect('/home');
     }
+
+    public function handleGoogleLogin(Request $request)
+    {
+        $client = new Client(['client_id' => config('google.client_id')]);
+        $payload = $client->verifyIdToken($request->input('id_token'));
+
+        if ($payload) {
+            $googleUser = $client->getAccessToken()['id_token'];
+            $user = User::where('email', $payload['email'])->first();
+
+            if (!$user) {
+                $user = new User();
+                $user->name = $payload['name'];
+                $user->email = $payload['email'];
+                $user->password = bcrypt(str_random(16));
+                $user->save();
+            }
+
+            auth()->login($user);
+
+            return redirect('/home');
+        } else {
+            return redirect('/login')->withErrors(['google' => 'Google login failed']);
+        }
+    }
+
+
 }
 ?>

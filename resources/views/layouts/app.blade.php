@@ -86,5 +86,43 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+    function onSignIn(googleUser) {
+  // Retrieve the Google ID token from the auth response
+  var id_token = googleUser.getAuthResponse().id_token;
+
+  // Send the token to your server using an Ajax request
+  $.ajax({
+    url: '/google-signin',
+    type: 'POST',
+    data: { id_token: id_token },
+    dataType: 'json',
+    success: function(response) {
+      // Handle the server response
+      if (response.status == 'success') {
+        // Redirect to the appropriate page
+        window.location.href = '/dashboard';
+      } else {
+        alert(response.message);
+      }
+    },
+    error: function(xhr, status, error) {
+      alert('Error: ' + error);
+    }
+  });
+}
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+    var form = document.getElementById('signup-form');
+    var tokenInput = document.createElement('input');
+    tokenInput.setAttribute('type', 'hidden');
+    tokenInput.setAttribute('name', 'id_token');
+    tokenInput.setAttribute('value', id_token);
+    form.appendChild(tokenInput);
+    form.submit();
+}
+</script>
 </body>
 </html>
